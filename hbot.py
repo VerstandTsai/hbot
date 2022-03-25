@@ -21,4 +21,4 @@ async def on_message(message):
         title = soup.find('h2', class_='title').find('span', class_='pretty').text
         await message.channel.send(f'標題：{title}\n網址：{url}')
 
-client.run(os.getenv(TOKEN))
+client.run(os.getenv('TOKEN'))
