@@ -1,1 +1,1 @@
-web: python3 hbot.py
+worker: python3 hbot.py
