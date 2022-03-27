@@ -14,7 +14,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     num = message.content
-    if len(num) == 6 and num.isdigit:
+    if len(num) == 6 and num.isdigit():
         url = f'https://nhentai.net/g/{num}/'
         res = requests.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
