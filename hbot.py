@@ -16,7 +16,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.author == client.usier:
+    if message.author == client.user:
         return
 
     if len(message.content) == 6 and message.content.isdigit():
