@@ -1,1 +1,1 @@
-web: gunicorn hbot:app
+web: python3 hbot.py & gunicorn app:app
