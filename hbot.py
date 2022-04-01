@@ -7,6 +7,13 @@ from secrets import token_urlsafe
 from shutil import rmtree
 from threading import Thread
 import asyncio
+from flask import Flask, send_file
+
+app = Flask(__name__)
+
+@app.route('/downloads/<string:file_id>')
+def download(file_id):
+    return send_file(f'./downloads/{file_id}.zip', as_attachment=True)
 
 client = discord.Client()
 
@@ -28,7 +35,7 @@ async def on_message(message):
 
     if message.content.startswith('!geth'):
         num = message.content.split()[1]
-        download_folder = '/app/downloads'
+        download_folder = './downloads'
         if len(os.listdir(download_folder)) > 5:
             rmtree(download_folder)
             os.mkdir(download_folder)
