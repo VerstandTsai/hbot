@@ -45,20 +45,20 @@ async def on_message(message):
         download_id = token_urlsafe(6)
         download_path = f'{download_folder}/{download_id}'
         os.mkdir(download_path)
-        async def get_page(page_num):
+        def get_page(page_num):
             page_url = f'{url}{page_num}/'
             page_res = requests.get(page_url)
             page_soup = BeautifulSoup(page_res.text, 'html.parser')
             img_url = page_soup.find(id='image-container').find('img')['src']
             img_res = requests.get(img_url)
             open(f'{download_path}/{page_num}.jpg', 'wb').write(img_res.content)
-            await progress.edit(content='進度：{page_num}/{pages}')
 
         threads = []
         for i in range(pages):
             threads.append(Thread(target=get_page, args=(i+1,)))
             threads[i].start()
             await asyncio.sleep(0.2)
+            await progress.edit(content='進度：{page_num}/{pages}')
         for i in range(pages):
             threads[i].join()
 
