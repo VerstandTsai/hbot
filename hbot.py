@@ -58,7 +58,7 @@ async def on_message(message):
             threads.append(Thread(target=get_page, args=(i+1,)))
             threads[i].start()
             await asyncio.sleep(0.2)
-            await progress.edit(content='進度：{page_num}/{pages}')
+            await progress.edit(content=f'進度：{page_num}/{pages}')
         for i in range(pages):
             threads[i].join()
 
@@ -68,6 +68,6 @@ async def on_message(message):
         rmtree(f'{download_path}')
 
         await progress.edit(content='下載完成，點擊以下連結以下載')
-        await message.channel.send(f'https://hentaibot-discord.herokuapp.com/downloads/{download_id}/')
+        await message.channel.send(f'https://hentaibot-discord.herokuapp.com/downloads/{download_id}')
 
 client.run(os.getenv('TOKEN'))
