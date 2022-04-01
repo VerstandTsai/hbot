@@ -45,7 +45,7 @@ async def on_message(message):
         download_id = token_urlsafe(6)
         download_path = f'{download_folder}/{download_id}'
         os.mkdir(download_path)
-        def get_page(page_num):
+        async def get_page(page_num):
             page_url = f'{url}{page_num}/'
             page_res = requests.get(page_url)
             page_soup = BeautifulSoup(page_res.text, 'html.parser')
