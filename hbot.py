@@ -58,7 +58,7 @@ async def on_message(message):
             threads.append(Thread(target=get_page, args=(i+1,)))
             threads[i].start()
             await asyncio.sleep(0.2)
-            await progress.edit(content=f'進度：{page_num}/{pages}')
+            await progress.edit(content=f'進度：{i+1}/{pages}')
         for i in range(pages):
             threads[i].join()
 
