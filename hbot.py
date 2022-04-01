@@ -28,7 +28,7 @@ async def on_message(message):
 
     if message.content.startswith('!geth'):
         num = message.content.split()[1]
-        download_folder = './downloads'
+        download_folder = '/app/downloads'
         if len(os.listdir(download_folder)) > 5:
             rmtree(download_folder)
             os.mkdir(download_folder)
