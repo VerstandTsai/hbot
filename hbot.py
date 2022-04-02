@@ -64,7 +64,7 @@ async def on_message(message):
 
         with ZipFile(f'{download_path}.zip', 'w') as zf:
             for i in range(1, pages+1):
-                zf.write(f'{download_path}/{i}.jpg')
+                zf.write(f'{download_path}/{i}.jpg', f'{i}.jpg')
         rmtree(f'{download_path}')
 
         await progress.edit(content='下載完成，點擊以下連結以下載')
