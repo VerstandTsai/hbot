@@ -21,7 +21,7 @@ async def on_message(message):
         return
 
     if len(message.content) == 6 and message.content.isdigit():
-        url = f'https://nhentai.net/g/{num}/'
+        url = f'https://nhentai.net/g/{message.content}/'
         res = requests.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
         title = soup.find('h2', class_='title').find('span', class_='pretty').text
