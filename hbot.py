@@ -54,7 +54,8 @@ async def geth(ctx, arg):
         page_soup = BeautifulSoup(page_res.text, 'html.parser')
         img_url = page_soup.find(id='image-container').find('img')['src']
         img_res = requests.get(img_url)
-        open(f'{download_path}/{page_num}.jpg', 'wb').write(img_res.content)
+        with open(f'{download_path}/{page_num}.jpg', 'wb') as page_img:
+            page_img.write(img_res.content)
 
     threads = []
     for i in range(pages):
