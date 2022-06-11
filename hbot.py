@@ -6,14 +6,28 @@ import os
 from zipfile import ZipFile
 from secrets import token_urlsafe
 from shutil import rmtree
-from threading import Thread
+from threading import Thread, Timer
 import asyncio
 
 bot = commands.Bot(command_prefix='!')
 
+async def postimgs():
+    channel = bot.get_channel(961941832613363782)
+    url = 'https://danbooru.donmai.us/posts?d=1&tags=order%3Arank'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'html.parser')
+    links = soup.find_all(class_='post-preview-link')
+    for link in links:
+        linkres = requests.get('https://danbooru.donmai.us' + link['href'])
+        imglink = BeutifulSoup.find(id='image')['src']
+        await channel.send(imglink)
+
 @bot.event
 async def on_ready():
     print(f'The bot has logged in as {bot.user}')
+    postimgs()
+    #t = Timer(86400, postimgs)
+    #t.start()
 
 @bot.event
 async def on_message(message):
