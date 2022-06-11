@@ -19,7 +19,7 @@ async def postimgs():
     links = soup.find_all(class_='post-preview-link')
     for link in links:
         linkres = requests.get('https://danbooru.donmai.us' + link['href'])
-        imglink = BeutifulSoup.find(id='image')['src']
+        imglink = BeautifulSoup.find(id='image')['src']
         await channel.send(imglink)
 
 @bot.event
