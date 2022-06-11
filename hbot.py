@@ -25,7 +25,7 @@ async def postimgs():
 @bot.event
 async def on_ready():
     print(f'The bot has logged in as {bot.user}')
-    postimgs()
+    await postimgs()
     #t = Timer(86400, postimgs)
     #t.start()
 
