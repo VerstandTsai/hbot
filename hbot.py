@@ -7,16 +7,18 @@ from zipfile import ZipFile
 from secrets import token_urlsafe
 from shutil import rmtree
 from threading import Thread, Timer
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 import asyncio
 
 bot = commands.Bot(command_prefix='!')
 
-async def postimgs():
+async def postimgs(num):
     channel = bot.get_channel(961941832613363782)
     url = 'https://danbooru.donmai.us/posts?d=1&tags=order%3Arank'
     res = requests.get(url)
     soup = BeautifulSoup(res.text, 'html.parser')
-    links = soup.find_all(class_='post-preview-link')
+    links = soup.find_all(class_='post-preview-link', limit=num)
     for link in links:
         linkres = requests.get('https://danbooru.donmai.us' + link['href'])
         imglink = BeautifulSoup(linkres.text, 'html.parser').find(id='image')['src']
@@ -25,9 +27,13 @@ async def postimgs():
 @bot.event
 async def on_ready():
     print(f'The bot has logged in as {bot.user}')
-    await postimgs()
-    #t = Timer(86400, postimgs)
-    #t.start()
+    now = datetime.now(tz=ZoneInfo('Asia/Taipei'))
+    new_day = now.replace(day=now.day, hour=20, minute=0, second=0, microsecond=0) + timedelta(days=1)
+    dsec = (new_day - now).total_seconds()
+    await asyncio.sleep(dsec)
+    while True:
+        await postimgs(10)
+        await asyncio.sleep(86400)
 
 @bot.event
 async def on_message(message):
