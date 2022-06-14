@@ -27,13 +27,11 @@ async def postimgs(num):
 @bot.event
 async def on_ready():
     print(f'The bot has logged in as {bot.user}')
-    now = datetime.now(tz=ZoneInfo('Asia/Taipei'))
-    new_day = now.replace(day=now.day, hour=20, minute=0, second=0, microsecond=0) + timedelta(days=1)
-    dsec = (new_day - now).total_seconds()
-    await asyncio.sleep(dsec)
     while True:
-        await postimgs(10)
-        await asyncio.sleep(86400)
+        now = datetime.now(tz=ZoneInfo('Asia/Taipei'))
+        if now.hour == 20 and now.minute == 0:
+            await postimgs(10)
+        await asyncio.sleep(60)
 
 @bot.event
 async def on_message(message):
