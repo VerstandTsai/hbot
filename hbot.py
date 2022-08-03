@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import requests
+import cloudscraper
 from bs4 import BeautifulSoup
 import os
 from zipfile import ZipFile
@@ -12,6 +13,7 @@ from zoneinfo import ZoneInfo
 import asyncio
 
 bot = commands.Bot(command_prefix='!')
+scraper = cloudscraper.create_scraper()
 
 async def postimgs(num):
     channel = bot.get_channel(961941832613363782)
@@ -40,7 +42,7 @@ async def on_message(message):
 
     if len(message.content) == 6 and message.content.isdigit():
         url = f'https://nhentai.net/g/{message.content}/'
-        res = requests.get(url)
+        res = scraper.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
         title = soup.find('h2', class_='title').find('span', class_='pretty').text
         await message.channel.send(f'標題：{title}\n網址：{url}')
@@ -55,7 +57,7 @@ async def geth(ctx, arg):
         os.mkdir(download_folder)
 
     url = f'https://nhentai.net/g/{arg}/'
-    res = requests.get(url)
+    res = scraper.get(url)
     soup = BeautifulSoup(res.text, 'html.parser')
     title = soup.find('h2', class_='title').find('span', class_='pretty').text
     pages = int(soup.find(id='tags').find_all(class_='name')[-1].text)
@@ -68,10 +70,10 @@ async def geth(ctx, arg):
     os.mkdir(download_path)
     def get_page(page_num):
         page_url = f'{url}{page_num}/'
-        page_res = requests.get(page_url)
+        page_res = scraper.get(page_url)
         page_soup = BeautifulSoup(page_res.text, 'html.parser')
         img_url = page_soup.find(id='image-container').find('img')['src']
-        img_res = requests.get(img_url)
+        img_res = scraper.get(img_url)
         with open(f'{download_path}/{page_num}.jpg', 'wb') as page_img:
             page_img.write(img_res.content)
 
