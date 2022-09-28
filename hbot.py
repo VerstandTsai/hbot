@@ -15,8 +15,8 @@ import asyncio
 bot = commands.Bot(command_prefix='!')
 scraper = cloudscraper.create_scraper()
 
-async def postimgs(num):
-    channel = bot.get_channel(961941832613363782)
+async def postimgs(num, channel_id):
+    channel = bot.get_channel(channel_id)
     url = 'https://danbooru.donmai.us/posts?d=1&tags=order%3Arank'
     res = requests.get(url)
     soup = BeautifulSoup(res.text, 'html.parser')
@@ -29,10 +29,15 @@ async def postimgs(num):
 @bot.event
 async def on_ready():
     print(f'The bot has logged in as {bot.user}')
+    h_channels = [
+        961941832613363782,
+        1011102133933834290
+    ]
     while True:
         now = datetime.now(tz=ZoneInfo('Asia/Taipei'))
         if now.hour == 20 and now.minute == 0:
-            await postimgs(10)
+            for channel in h_channels:
+                await postimgs(10, channel)
         await asyncio.sleep(60)
 
 @bot.event
